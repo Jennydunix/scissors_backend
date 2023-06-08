@@ -59,6 +59,7 @@ route.post("/signIn", async (req, res) => {
 
 		// Create a jwt token
 		const token = jwt.sign({ id: user._id }, process.env.JWT);
+		console.log(token)
 		const { password, isAdmin, ...others } = user._doc;
 		res
 			.cookie("access_token", token, { httpOnly: true })
