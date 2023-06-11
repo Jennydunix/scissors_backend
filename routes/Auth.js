@@ -61,7 +61,11 @@ route.post("/signIn", async (req, res) => {
 		const token = jwt.sign({ id: user._id }, process.env.JWT);
 		const { password, isAdmin, ...others } = user._doc;
 		res
-			.cookie("access_token", token, { httpOnly: true, secure: true })
+			.cookie("access_token", token, {
+				httpOnly: true,
+				secure: true,
+				sameSite: "none",
+			})
 			.status(201)
 			.json(others);
 	} catch (error) {
@@ -72,8 +76,9 @@ route.post("/signIn", async (req, res) => {
 route.post("/logout", async (req, res) => {
 	res
 		.clearCookie("accessToken", {
-			sameSite: "none",
+			httpOnly: true,
 			secure: true,
+			sameSite: "none",
 		})
 		.status(200)
 		.json({ msg: "User has been logged out" });
